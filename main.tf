@@ -9,6 +9,7 @@ terraform {
 
 provider "aws" {
   # Configuration options
+  # WORKSHOP: Specify the region you like to use, especially if you plan on using your keypair to access your EC2 instance.
   region = "us-east-2"
 }
 
@@ -21,6 +22,9 @@ resource "aws_security_group" "allow_ssh_from_anywhere" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
+    # WORKSHOP: Modify the following line to a CIDR block specific to you, and uncomment the next line with 0.0.0.0
+    # This line allows SSH access from any IP address
+#    cidr_blocks      = ["0.0.0.0/0"]
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
@@ -46,6 +50,9 @@ resource "aws_security_group" "allow_port_80_from_anywhere" {
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
+    # WORKSHOP: Modify the following line to a CIDR block specific to you, and uncomment the next line with 0.0.0.0
+    # This line allows HTTP access from any IP address
+#    cidr_blocks      = ["0.0.0.0/0"]
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
@@ -78,4 +85,24 @@ resource "aws_instance" "ec2" {
   instance_type = "t3.nano"
   associate_public_ip_address = true
   vpc_security_group_ids = [ aws_security_group.allow_ssh_from_anywhere.id, aws_security_group.allow_port_80_from_anywhere.id]
+
+  user_data = <<-EOF
+    #!/bin/bash
+    # install httpd (Linux 2 version)
+    yum update -y
+    yum install -y httpd
+    systemctl start httpd
+    systemctl enable httpd
+    echo "<h1>Hello World from the AWS HashiCorp + Snyk Workshop on $(hostname -f)</h1>" > /var/www/html/index.html
+  EOF
+
+  # WORKSHOP: Add the name of your key here
+#  key_name = "mam-workshop-keypair"
+
+  # WORKSHOP: uncomment the lines below to enable encrypted block device
+#  root_block_device {
+#    encrypted = true
+#  }
+
+
 }
