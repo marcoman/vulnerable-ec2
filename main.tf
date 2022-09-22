@@ -106,3 +106,7 @@ resource "aws_instance" "ec2" {
 
 
 }
+
+output "ec2_url" {
+  value = aws_instance.ec2.public_dns
+}
