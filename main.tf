@@ -5,6 +5,13 @@ terraform {
       version = "4.28.0"
     }
   }
+
+  backend "s3" {
+    encrypt = true
+    bucket = "apn-snyk-terraform-20221010"
+    key = "aws/workshoop/terraform.tfstate"
+    region = "us-east-2"
+  }
 }
 
 provider "aws" {

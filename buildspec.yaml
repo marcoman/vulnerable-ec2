@@ -1,0 +1,26 @@
+version: 0.2
+
+phases: 
+    pre_build: 
+        commands:
+            - echo Test code...
+
+    build: 
+        commands: 
+            - |
+                curl https://static.snyk.io/cli/latest/snyk-linux -o snyk-linux
+                chmod +x snyk-linux
+                ./snyk-linux --version
+            - |
+                sudo yum install -y yum-utils
+                sudo yum-config-manager --add-repo 'https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo'
+                sudo yum -y install terraform
+                terraform -help
+                
+            - echo ./snyk-linux iac test
+            - terraform init
+            - terraform plan
+
+    post_build: 
+        commands:
+            - echo Build completed on `date`
