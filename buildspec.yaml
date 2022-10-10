@@ -20,6 +20,7 @@ phases:
             - echo ./snyk-linux iac test
             - terraform init
             - terraform plan
+            - terraform apply --autoapprove
 
     post_build: 
         commands:
