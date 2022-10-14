@@ -18,9 +18,9 @@ resource "aws_security_group" "allow_ssh_from_anywhere" {
   description = "Allow SSH inbound traffic from anywhere"
 
   ingress {
-    description      = "SSH from anywhere"
-    from_port        = 22
-    to_port          = 22
+    description      = "RDP from anywhere"
+    from_port        = 3389
+    to_port          = 3389
     protocol         = "tcp"
     # WORKSHOP: Modify the following line to a CIDR block specific to you, and uncomment the next line with 0.0.0.0
     # This line allows SSH access from any IP address
