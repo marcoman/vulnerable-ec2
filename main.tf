@@ -60,15 +60,16 @@ resource "aws_security_group" "allow_port_80_from_anywhere" {
     protocol         = "tcp"
     # WORKSHOP: Modify the following line to a CIDR block specific to you, and uncomment the next line with 0.0.0.0
     # This line allows HTTP access from any IP address
+    cidr_blocks      = ["68.80.18.164/32"]
 #    cidr_blocks      = ["0.0.0.0/0"]
-    cidr_blocks      = ["0.0.0.0/0"]
   }
 
   egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = ["68.80.18.164/32"]
+#    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
